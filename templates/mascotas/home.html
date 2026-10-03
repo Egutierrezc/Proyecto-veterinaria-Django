@@ -3,27 +3,46 @@
 {% block title %}Inicio - Veterinaria{% endblock %}
 
 {% block content %}
-<div class="row align-items-center">
-    <div class="col-lg-6">
-        <h1 class="display-5 fw-bold text-success">Bienvenido a PetCare</h1>
-        <p class="lead text-muted">
-            Gestiona pacientes, dueños y registros de atención con una interfaz simple y funcional.
-        </p>
-        <div class="d-flex gap-3 mt-4">
-            <a href="{% url 'mascota_create' %}" class="btn btn-success btn-lg">Registrar mascota</a>
-            <a href="{% url 'mascota_list' %}" class="btn btn-outline-success btn-lg">Ver listado</a>
+<div class="hero-section">
+    <div class="row align-items-center g-4">
+        <div class="col-lg-7">
+            <span class="badge rounded-pill bg-success-subtle text-success px-3 py-2 mb-3">Cuidado, cariño y salud</span>
+            <h1 class="display-4 fw-bold text-success mb-3">Tu clínica veterinaria, en un solo lugar</h1>
+            <p class="lead text-muted mb-4">
+                En PetCare gestionamos la información de cada mascota con rapidez, orden y atención humana.
+                Registra pacientes, consulta su información y lleva el control del cuidado diario.
+            </p>
+            <div class="d-flex flex-wrap gap-3 mt-4">
+                <a href="{% url 'mascota_create' %}" class="btn btn-success btn-lg px-4">Registrar mascota</a>
+                <a href="{% url 'mascota_list' %}" class="btn btn-outline-success btn-lg px-4">Ver pacientes</a>
+            </div>
         </div>
-    </div>
-    <div class="col-lg-6">
-        <div class="card shadow border-0">
-            <div class="card-body p-4">
-                <h3 class="card-title text-success">Resumen</h3>
-                <ul class="list-group list-group-flush mt-3">
-                    <li class="list-group-item">✅ Registro de mascotas</li>
-                    <li class="list-group-item">✅ Consultas por paciente</li>
-                    <li class="list-group-item">✅ Edición y eliminación</li>
-                    <li class="list-group-item">✅ Validaciones de datos</li>
-                </ul>
+
+        <div class="col-lg-5">
+            <div class="welcome-card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="icon-circle me-3">🐾</div>
+                        <div>
+                            <h3 class="mb-0 text-success">Atención veterinaria</h3>
+                        </div>
+                    </div>
+                    <p class="mb-3 text-muted">
+                        Cuidamos cada detalle para que cada visita se sienta más clara y más cercana.
+                    </p>
+                    <div class="feature-box">
+                        <strong>Registro:</strong>
+                        <span>Documenta a cada paciente de forma ordenada.</span>
+                    </div>
+                    <div class="feature-box">
+                        <strong>Consulta:</strong>
+                        <span>Busca y revisa la información de cada mascota.</span>
+                    </div>
+                    <div class="feature-box">
+                        <strong>Control:</strong>
+                        <span>Actualiza datos y mantiene un historial organizado.</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

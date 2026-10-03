@@ -5,9 +5,12 @@
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-lg-8">
-        <div class="card shadow-sm border-0">
-            <div class="card-body p-4">
-                <h2 class="text-success mb-4">{{ titulo }}</h2>
+        <div class="card form-card shadow-sm border-0">
+            <div class="card-body p-4 p-md-5">
+                <div class="mb-4">
+                    <span class="section-pill">Formulario</span>
+                    <h2 class="text-success mt-2 mb-0">{{ titulo }}</h2>
+                </div>
 
                 <form method="post">
                     {% csrf_token %}
@@ -24,7 +27,7 @@
 
                     <div class="d-flex justify-content-between mt-4">
                         <a href="{% url 'mascota_list' %}" class="btn btn-outline-secondary">Volver</a>
-                        <button type="submit" class="btn btn-success">Guardar</button>
+                        <button type="submit" class="btn btn-success btn-lg">Guardar</button>
                     </div>
                 </form>
 
