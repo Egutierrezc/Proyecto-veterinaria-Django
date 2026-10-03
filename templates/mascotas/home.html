@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio - Veterinaria{% endblock %}
+
+{% block content %}
+<div class="row align-items-center">
+    <div class="col-lg-6">
+        <h1 class="display-5 fw-bold text-success">Bienvenido a PetCare</h1>
+        <p class="lead text-muted">
+            Gestiona pacientes, dueños y registros de atención con una interfaz simple y funcional.
+        </p>
+        <div class="d-flex gap-3 mt-4">
+            <a href="{% url 'mascota_create' %}" class="btn btn-success btn-lg">Registrar mascota</a>
+            <a href="{% url 'mascota_list' %}" class="btn btn-outline-success btn-lg">Ver listado</a>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow border-0">
+            <div class="card-body p-4">
+                <h3 class="card-title text-success">Resumen</h3>
+                <ul class="list-group list-group-flush mt-3">
+                    <li class="list-group-item">✅ Registro de mascotas</li>
+                    <li class="list-group-item">✅ Consultas por paciente</li>
+                    <li class="list-group-item">✅ Edición y eliminación</li>
+                    <li class="list-group-item">✅ Validaciones de datos</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
