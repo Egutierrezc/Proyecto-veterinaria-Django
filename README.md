@@ -1,41 +1,22 @@
-# Veterinaria CRUD con Django
+# Proyecto de veterinaria
 
-Este proyecto inicia la base para una aplicación web de veterinaria con Django.
+Aplicación web para registrar y administrar mascotas.
 
-## Parte 1: estructura base
+## Para iniciar
 
-- Proyecto Django: `veterinaria`
-- Aplicación: `mascotas`
-- Modelo inicial: `Mascota`
-- Vistas CRUD básicas
-- Templates con navegabilidad
-- Validaciones de formulario
+1. Iniciar MySQL en XAMPP y crear la base `veterinaria` en phpMyAdmin.
+2. Abrir PowerShell en la carpeta del proyecto y ejecutar:
 
-## Siguientes pasos
-
-1. Crear y activar entorno virtual.
-2. Instalar dependencias con `pip install -r requirements.txt`.
-3. Ejecutar `python manage.py migrate`.
-4. Crear superusuario opcional con `python manage.py createsuperuser`.
-5. Configurar MySQL/MariaDB para producción.
-
-## Configuración MySQL/MariaDB
-
-La configuración actual usa SQLite por defecto para poder trabajar de manera local y rápida. Si quieres conectarte a MySQL, habilita la variable `USE_MYSQL=1` y define los datos de conexión en el entorno.
-
-Ejemplo:
-
-```bash
-export USE_MYSQL=1
-export DB_NAME=veterinaria
-export DB_USER=root
-export DB_PASSWORD=tu_password
-export DB_HOST=localhost
-export DB_PORT=3306
-```
-
-Luego ejecuta:
-
-```bash
+```powershell
+py -m venv venv
+.\venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+$env:USE_MYSQL = "1"
+$env:DB_NAME = "veterinaria"
+$env:DB_USER = "root"
+$env:DB_PASSWORD = ""
 python manage.py migrate
+python manage.py runserver
 ```
+
+Abrir `http://127.0.0.1:8000/`. Si `root` tiene contraseña(para mas adelante), cambiar el valor de `DB_PASSWORD`. Ejecutar todo desde la misma ventana de PowerShell.
