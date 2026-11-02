@@ -15,6 +15,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework.authtoken',
     'mascotas',
 ]
 
@@ -47,16 +49,30 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'veterinaria.wsgi.application'
 
-if os.getenv('USE_MYSQL') == '1':
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
+
+LOGIN_URL = 'login'
+
+if os.getenv('USE_MYSQL', '1') == '1':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': os.getenv('DB_NAME', 'veterinaria'),
             'USER': os.getenv('DB_USER', 'root'),
             'PASSWORD': os.getenv('DB_PASSWORD', ''),
-            'HOST': os.getenv('DB_HOST', 'localhost'),
+            'HOST': os.getenv('DB_HOST', '127.0.0.1'),
             'PORT': os.getenv('DB_PORT', '3306'),
-            'OPTIONS': {'charset': 'utf8mb4'},
+            'OPTIONS': {
+                'charset': 'utf8mb4',
+                'sql_mode': 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION',
+            },
         }
     }
 else:
