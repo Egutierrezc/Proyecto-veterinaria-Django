@@ -1,67 +1,71 @@
+import re
+from decimal import Decimal
 from django import forms
-
 from .models import Mascota
+
+LETTER_FIELD_PATTERN = r"[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s'-]+"
 
 
 class MascotaForm(forms.ModelForm):
+    observaciones = forms.CharField(
+        required=False,
+        max_length=500,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'maxlength': 500}),
+    )
+
     class Meta:
         model = Mascota
         exclude = ['fecha_creacion']
         widgets = {
-            'nombre': forms.TextInput(attrs={'class': 'form-control', 'maxlength': 100, 'pattern': r"[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s'-]+", 'title': 'Solo letras, espacios, acentos, apostrofes y guiones', 'data-letter-only': 'true'}),
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'maxlength': 100, 'pattern': LETTER_FIELD_PATTERN, 'title': 'Solo letras, espacios, acentos, apostrofes y guiones', 'data-letter-only': 'true'}),
             'especie': forms.Select(attrs={'class': 'form-select'}),
-            'raza': forms.TextInput(attrs={'class': 'form-control', 'maxlength': 80, 'pattern': r"[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s'-]+", 'title': 'Solo letras, espacios, acentos, apostrofes y guiones', 'data-letter-only': 'true'}),
-            'edad': forms.NumberInput(attrs={'class': 'form-control', 'min': '1', 'max': '50'}),
-            'peso': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01', 'min': '0.1', 'max': '200'}),
-            'propietario': forms.TextInput(attrs={'class': 'form-control', 'maxlength': 150, 'pattern': r"[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s'-]+", 'title': 'Solo letras, espacios, acentos, apostrofes y guiones', 'data-letter-only': 'true'}),
+            'raza': forms.TextInput(attrs={'class': 'form-control', 'maxlength': 80, 'pattern': LETTER_FIELD_PATTERN, 'title': 'Solo letras, espacios, acentos, apostrofes y guiones', 'data-letter-only': 'true'}),
+            'edad': forms.NumberInput(attrs={'class': 'form-control', 'min': '1', 'max': '20'}),
+            'peso': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01', 'min': '0.1', 'max': '100'}),
+            'propietario': forms.TextInput(attrs={'class': 'form-control', 'maxlength': 150, 'pattern': LETTER_FIELD_PATTERN, 'title': 'Solo letras, espacios, acentos, apostrofes y guiones', 'data-letter-only': 'true'}),
             'telefono': forms.TextInput(attrs={'class': 'form-control', 'maxlength': 20}),
             'correo': forms.EmailInput(attrs={'class': 'form-control', 'maxlength': 150}),
-            'observaciones': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'maxlength': 500}),
         }
+
+    @staticmethod
+    def _clean_letter_field(value, label, min_length):
+        value = value.strip()
+        if len(value) < min_length:
+            raise forms.ValidationError(f'{label} debe tener al menos {min_length} caracteres.')
+        if not re.fullmatch(LETTER_FIELD_PATTERN, value):
+            raise forms.ValidationError(
+                f'{label} solo puede contener letras, espacios, acentos, apostrofes y guiones.'
+            )
+        return value
 
     def clean_nombre(self):
         nombre = self.cleaned_data.get('nombre')
         if nombre is None:
             return nombre
-        nombre = nombre.strip()
-        if len(nombre) < 2:
-            raise forms.ValidationError('El nombre debe tener al menos 2 caracteres.')
-        if any(car.isdigit() for car in nombre):
-            raise forms.ValidationError('El nombre no puede contener números.')
-        return nombre
+        return self._clean_letter_field(nombre, 'El nombre', 2)
 
     def clean_raza(self):
         raza = self.cleaned_data.get('raza')
         if raza is None:
             return raza
-        raza = raza.strip()
-        if len(raza) < 2:
-            raise forms.ValidationError('La raza debe tener al menos 2 caracteres.')
-        if any(car.isdigit() for car in raza):
-            raise forms.ValidationError('La raza no puede contener números.')
-        return raza
+        return self._clean_letter_field(raza, 'La raza', 2)
 
     def clean_propietario(self):
         propietario = self.cleaned_data.get('propietario')
         if propietario is None:
             return propietario
-        propietario = propietario.strip()
-        if len(propietario) < 3:
-            raise forms.ValidationError('El nombre del propietario debe tener al menos 3 caracteres.')
-        if any(car.isdigit() for car in propietario):
-            raise forms.ValidationError('El nombre del propietario no puede contener números.')
-        return propietario
+        return self._clean_letter_field(propietario, 'El nombre del propietario', 3)
 
     def clean_edad(self):
         edad = self.cleaned_data.get('edad')
-        if edad is not None and edad <= 0:
-            raise forms.ValidationError('La edad debe ser mayor que 0.')
+        if edad is not None and not 1 <= edad <= 20:
+            raise forms.ValidationError('La edad debe estar entre 1 y 20 años.')
         return edad
 
     def clean_peso(self):
         peso = self.cleaned_data.get('peso')
-        if peso is not None and peso <= 0:
-            raise forms.ValidationError('El peso debe ser mayor que 0.')
+        if peso is not None and not Decimal('0.1') <= peso <= Decimal('100'):
+            raise forms.ValidationError('El peso debe estar entre 0,1 y 100 kg.')
         return peso
 
     def clean_telefono(self):
@@ -70,10 +74,11 @@ class MascotaForm(forms.ModelForm):
             return telefono
 
         telefono = telefono.strip()
+        if not re.fullmatch(r'\+?[0-9]+(?:[ -][0-9]+)*', telefono):
+            raise forms.ValidationError(
+                'El teléfono solo puede contener números y separadores; el signo + solo puede ir al inicio.'
+            )
         numeros = ''.join(caracter for caracter in telefono if caracter.isdigit())
-
-        if not telefono.replace('+', '').replace('-', '').replace(' ', '').isdigit():
-            raise forms.ValidationError('El teléfono solo puede contener números, espacios, + y -.')
         if len(numeros) < 7:
             raise forms.ValidationError('El teléfono debe tener al menos 7 dígitos.')
         return telefono
