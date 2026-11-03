@@ -11,14 +11,14 @@ class Mascota(models.Model):
         ('Otro', 'Otro'),
     ]
 
-    nombre = models.CharField(max_length=100, verbose_name='Nombre')
+    nombre = models.CharField(max_length=20, verbose_name='Nombre')
     especie = models.CharField(max_length=20, choices=ESPECIES_CHOICES, verbose_name='Especie')
-    raza = models.CharField(max_length=80, verbose_name='Raza')
+    raza = models.CharField(max_length=20, verbose_name='Raza')
     edad = models.PositiveIntegerField(verbose_name='Edad (años)')
     peso = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Peso (kg)')
-    propietario = models.CharField(max_length=150, verbose_name='Dueño')
+    propietario = models.CharField(max_length=20, verbose_name='Dueño')
     telefono = models.CharField(max_length=20, verbose_name='Teléfono')
-    correo = models.EmailField(max_length=150, verbose_name='Correo electrónico')
+    correo = models.EmailField(max_length=20, verbose_name='Correo electrónico')
     observaciones = models.TextField(blank=True, verbose_name='Observaciones')
     fecha_creacion = models.DateTimeField(default=timezone.now, verbose_name='Fecha de registro')
 
