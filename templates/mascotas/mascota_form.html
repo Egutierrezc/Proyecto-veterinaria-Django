@@ -19,6 +19,13 @@
                         <div class="mb-3">
                             <label for="{{ field.id_for_label }}" class="form-label fw-semibold">{{ field.label }}</label>
                             {{ field }}
+                            {% if field.name == 'edad' %}
+                                <div class="form-text">Edad máxima: 20 años.</div>
+                            {% elif field.name == 'peso' %}
+                                <div class="form-text">Peso permitido: de 0,1 a 100 kg.</div>
+                            {% elif field.field.max_length and field.name != 'especie' %}
+                                <div class="form-text">Máximo {{ field.field.max_length }} caracteres.</div>
+                            {% endif %}
                             {% if field.errors %}
                                 <div class="text-danger small mt-1">{{ field.errors|striptags }}</div>
                             {% endif %}

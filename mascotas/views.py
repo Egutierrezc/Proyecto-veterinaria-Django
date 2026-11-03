@@ -32,12 +32,8 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            token, _ = Token.objects.get_or_create(user=user)
-            return render(
-                request,
-                'registration/login_success.html',
-                {'token': token.key, 'next_url': next_url},
-            )
+            Token.objects.get_or_create(user=user)
+            return redirect(next_url)
     else:
         form = AuthenticationForm(request)
 

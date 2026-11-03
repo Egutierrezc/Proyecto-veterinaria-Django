@@ -147,11 +147,11 @@ class MascotaModelTest(TestCase):
 
     def test_rejects_values_beyond_maximum_lengths(self):
         invalid_values = [
-            ('nombre', 'L' * 101),
-            ('raza', 'R' * 81),
-            ('propietario', 'A' * 151),
+            ('nombre', 'L' * 21),
+            ('raza', 'R' * 21),
+            ('propietario', 'A' * 21),
             ('telefono', '1' * 21),
-            ('correo', f"{'a' * 146}@example.com"),
+            ('correo', 'abcdefghijklmnop@x.co'),
             ('observaciones', 'a' * 501),
         ]
 
@@ -162,6 +162,15 @@ class MascotaModelTest(TestCase):
                 form = MascotaForm(data)
                 self.assertFalse(form.is_valid())
                 self.assertIn(field, form.errors)
+
+    def test_form_displays_field_limits(self):
+        self.client.force_login(self.create_test_user())
+        response = self.client.get(reverse('mascota_create'))
+
+        self.assertContains(response, 'Máximo 20 caracteres.', count=5)
+        self.assertContains(response, 'Máximo 500 caracteres.')
+        self.assertContains(response, 'Edad máxima: 20 años.')
+        self.assertContains(response, 'Peso permitido: de 0,1 a 100 kg.')
 
     def test_update_and_delete_view(self):
         self.client.force_login(self.create_test_user())
@@ -199,18 +208,16 @@ class MascotaModelTest(TestCase):
         self.assertEqual(delete_response.status_code, 302)
         self.assertFalse(Mascota.objects.filter(pk=mascota.pk).exists())
 
-    def test_login_generates_and_displays_token(self):
+    def test_login_generates_token_without_displaying_it(self):
         user = self.create_test_user()
         response = self.client.post(
             reverse('login'),
             {'username': 'veterinario', 'password': 'ClaveSegura123!'},
         )
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Token de autenticación')
-        self.assertContains(response, 'Authorization: Token')
+        self.assertRedirects(response, reverse('home'))
         token = Token.objects.get(user=user)
-        self.assertContains(response, token.key)
+        self.assertNotIn(token.key, response.content.decode())
         self.assertTrue('_auth_user_id' in self.client.session)
 
     def test_invalid_login_does_not_create_token(self):

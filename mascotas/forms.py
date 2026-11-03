@@ -17,14 +17,14 @@ class MascotaForm(forms.ModelForm):
         model = Mascota
         exclude = ['fecha_creacion']
         widgets = {
-            'nombre': forms.TextInput(attrs={'class': 'form-control', 'maxlength': 100, 'pattern': LETTER_FIELD_PATTERN, 'title': 'Solo letras, espacios, acentos, apostrofes y guiones', 'data-letter-only': 'true'}),
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'maxlength': 20, 'pattern': LETTER_FIELD_PATTERN, 'title': 'Solo letras, espacios, acentos, apostrofes y guiones', 'data-letter-only': 'true'}),
             'especie': forms.Select(attrs={'class': 'form-select'}),
-            'raza': forms.TextInput(attrs={'class': 'form-control', 'maxlength': 80, 'pattern': LETTER_FIELD_PATTERN, 'title': 'Solo letras, espacios, acentos, apostrofes y guiones', 'data-letter-only': 'true'}),
+            'raza': forms.TextInput(attrs={'class': 'form-control', 'maxlength': 20, 'pattern': LETTER_FIELD_PATTERN, 'title': 'Solo letras, espacios, acentos, apostrofes y guiones', 'data-letter-only': 'true'}),
             'edad': forms.NumberInput(attrs={'class': 'form-control', 'min': '1', 'max': '20'}),
             'peso': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01', 'min': '0.1', 'max': '100'}),
-            'propietario': forms.TextInput(attrs={'class': 'form-control', 'maxlength': 150, 'pattern': LETTER_FIELD_PATTERN, 'title': 'Solo letras, espacios, acentos, apostrofes y guiones', 'data-letter-only': 'true'}),
+            'propietario': forms.TextInput(attrs={'class': 'form-control', 'maxlength': 20, 'pattern': LETTER_FIELD_PATTERN, 'title': 'Solo letras, espacios, acentos, apostrofes y guiones', 'data-letter-only': 'true'}),
             'telefono': forms.TextInput(attrs={'class': 'form-control', 'maxlength': 20}),
-            'correo': forms.EmailInput(attrs={'class': 'form-control', 'maxlength': 150}),
+            'correo': forms.EmailInput(attrs={'class': 'form-control', 'maxlength': 20}),
         }
 
     @staticmethod
