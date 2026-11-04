@@ -7,12 +7,29 @@ from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 from rest_framework.authtoken.models import Token
 
-from .forms import MascotaForm
+from .forms import MascotaForm, RegistroForm
 from .models import Mascota
 
 
 def home(request):
     return render(request, 'mascotas/home.html')
+
+
+def register_view(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+
+    if request.method == 'POST':
+        form = RegistroForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            Token.objects.get_or_create(user=user)
+            login(request, user)
+            return redirect('home')
+    else:
+        form = RegistroForm()
+
+    return render(request, 'mascotas/register.html', {'form': form})
 
 
 def login_view(request):

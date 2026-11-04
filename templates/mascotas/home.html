@@ -17,7 +17,8 @@
                     <a href="{% url 'mascota_create' %}" class="btn btn-success btn-lg px-4">Registrar mascota</a>
                     <a href="{% url 'mascota_list' %}" class="btn btn-outline-success btn-lg px-4">Ver pacientes</a>
                 {% else %}
-                    <a href="{% url 'login' %}" class="btn btn-success btn-lg px-4">Iniciar sesión</a>
+                    <a href="{% url 'register' %}" class="btn btn-success btn-lg px-4">Registrarse</a>
+                    <a href="{% url 'login' %}" class="btn btn-outline-success btn-lg px-4">Iniciar sesión</a>
                 {% endif %}
             </div>
         </div>
