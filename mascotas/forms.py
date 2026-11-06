@@ -101,6 +101,7 @@ class RegistroForm(UserCreationForm):
     )
     email = forms.EmailField(
         label='Correo electrónico',
+        max_length=30,
         required=True,
         widget=forms.EmailInput(attrs={'class': 'form-control'})
     )
@@ -109,7 +110,7 @@ class RegistroForm(UserCreationForm):
         model = User
         fields = ['username', 'first_name', 'last_name', 'email']
         widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control', 'maxlength': 150}),
+            'username': forms.TextInput(attrs={'class': 'form-control', 'maxlength': 50}),
         }
 
     @staticmethod
