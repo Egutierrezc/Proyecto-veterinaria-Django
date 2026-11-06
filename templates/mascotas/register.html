@@ -39,4 +39,30 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const allowedPattern = /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s'-]+$/;
+        document.querySelectorAll('[data-letter-only="true"]').forEach(function (input) {
+            input.addEventListener('keydown', function (event) {
+                const key = event.key;
+                const allowed = ['Backspace', 'Tab', 'Delete', 'ArrowLeft', 'ArrowRight', 'Home', 'End', ' ', "'", '-'];
+
+                if (allowed.includes(key)) {
+                    return;
+                }
+
+                if (!/^[A-Za-zÁÉÍÓÚáéíóúÑñÜü]$/.test(key)) {
+                    event.preventDefault();
+                }
+            });
+
+            input.addEventListener('input', function () {
+                if (!allowedPattern.test(this.value)) {
+                    this.value = this.value.replace(/[0-9]/g, '').replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñÜü\s'-]/g, '');
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}
